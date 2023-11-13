@@ -22,7 +22,9 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "input_processing.h"
+// #include "input_processing.h"
+//#include "software_timer.h"
+#include "global.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -89,14 +91,17 @@ int main(void)
   MX_GPIO_Init();
   MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
-
+  HAL_TIM_Base_Start_IT(&htim2);
+  HAL_GPIO_WritePin(EN_0_GPIO_Port, EN_0_Pin, SET);
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  fsm_for_input_processing();
+
+	 // fsm_for_input_processing();
+	 // display7SEG(2);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -241,7 +246,13 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
-
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+{
+	if(htim->Instance == TIM2){
+		button_reading();
+		timer_run();
+	}
+}
 /* USER CODE END 4 */
 
 /**

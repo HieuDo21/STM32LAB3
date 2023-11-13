@@ -38,7 +38,7 @@ void button_reading(void){
 				//since the button is pressed.
 					flagForButtonPress1s[i] = 1;
 					//todo
-				}
+ 				}
 			} else {
 				counterForButtonPress1s[i] = 0;
 				flagForButtonPress1s[i] = 0;
