@@ -1,1 +1,5 @@
-display.c:10:6:display7SEG	16	static
+display.c:11:6:display7SEG	16	static
+display.c:18:7:update7SEG	16	static
+display.c:61:6:update7SegBuffer	4	static
+display.c:68:6:clearAllLight	8	static
+display.c:77:6:turnOnAllLight	8	static

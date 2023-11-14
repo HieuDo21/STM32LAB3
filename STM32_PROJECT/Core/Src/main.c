@@ -92,16 +92,25 @@ int main(void)
   MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
   HAL_TIM_Base_Start_IT(&htim2);
-  HAL_GPIO_WritePin(EN_0_GPIO_Port, EN_0_Pin, SET);
+
+  setTimer (50, 1);
+  value1 = 200;
+  value2 = 200;
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  status = INIT;
   while (1)
   {
-
-	 // fsm_for_input_processing();
-	 // display7SEG(2);
+	  update7SegBuffer();
+	  FsmForTrafficLight();
+	  if(timer_flag[1] == 1){
+		  if (index_led > 3){
+			index_led = 0;
+		  }update7SEG(index_led++);
+		  setTimer(50, 1);
+	  }
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -204,30 +213,24 @@ static void MX_GPIO_Init(void)
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOA, RED_LIGHT_1_Pin|YELLOW_LIGHT_1_Pin|GREEN_LIGHT_1_Pin|RED_LIGHT_2_Pin
-                          |YELLOW_LIGHT_2_Pin|GREE_LIGHT_2_Pin|EN_0_Pin|EN_1_Pin
+                          |YELLOW_LIGHT_2_Pin|GREEN_LIGHT_2_Pin|EN_0_Pin|EN_1_Pin
                           |EN_2_Pin|EN_3_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOB, SEG_0_Pin|SEG_1_Pin|SEG_2_Pin|SEG_3_Pin
                           |SEG_4_Pin|SEG_5_Pin|SEG_6_Pin, GPIO_PIN_RESET);
 
-  /*Configure GPIO pins : BUTTON_2_Pin BUTTON_3_Pin */
-  GPIO_InitStruct.Pin = BUTTON_2_Pin|BUTTON_3_Pin;
+  /*Configure GPIO pins : BUTTON_0_Pin BUTTON_1_Pin BUTTON_2_Pin */
+  GPIO_InitStruct.Pin = BUTTON_0_Pin|BUTTON_1_Pin|BUTTON_2_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : BUTTON_1_Pin */
-  GPIO_InitStruct.Pin = BUTTON_1_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  HAL_GPIO_Init(BUTTON_1_GPIO_Port, &GPIO_InitStruct);
-
   /*Configure GPIO pins : RED_LIGHT_1_Pin YELLOW_LIGHT_1_Pin GREEN_LIGHT_1_Pin RED_LIGHT_2_Pin
-                           YELLOW_LIGHT_2_Pin GREE_LIGHT_2_Pin EN_0_Pin EN_1_Pin
+                           YELLOW_LIGHT_2_Pin GREEN_LIGHT_2_Pin EN_0_Pin EN_1_Pin
                            EN_2_Pin EN_3_Pin */
   GPIO_InitStruct.Pin = RED_LIGHT_1_Pin|YELLOW_LIGHT_1_Pin|GREEN_LIGHT_1_Pin|RED_LIGHT_2_Pin
-                          |YELLOW_LIGHT_2_Pin|GREE_LIGHT_2_Pin|EN_0_Pin|EN_1_Pin
+                          |YELLOW_LIGHT_2_Pin|GREEN_LIGHT_2_Pin|EN_0_Pin|EN_1_Pin
                           |EN_2_Pin|EN_3_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
@@ -251,6 +254,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	if(htim->Instance == TIM2){
 		button_reading();
 		timer_run();
+		getKeyInput();
 	}
 }
 /* USER CODE END 4 */
