@@ -23,6 +23,7 @@ void FsmForTrafficLight (void){
 	case RED1_GREEN2:
 		value2 = timer_counter[0] * timerInterruptCycle;
 		value1 = timer_counter[0] * timerInterruptCycle + timeForYellow;
+		displayOn7SegLed();
 		HAL_GPIO_WritePin(RED_LIGHT_1_GPIO_Port, RED_LIGHT_1_Pin, SET);
 		HAL_GPIO_WritePin(YELLOW_LIGHT_1_GPIO_Port, YELLOW_LIGHT_1_Pin, RESET);
 		HAL_GPIO_WritePin(GREEN_LIGHT_1_GPIO_Port, GREEN_LIGHT_1_Pin, RESET);
@@ -45,6 +46,7 @@ void FsmForTrafficLight (void){
 	case RED1_YELLOW2:
 		value2 = timer_counter[0] * timerInterruptCycle;
 		value1 = timer_counter[0] * timerInterruptCycle;
+		displayOn7SegLed();
 		HAL_GPIO_WritePin(RED_LIGHT_1_GPIO_Port, RED_LIGHT_1_Pin, SET);
 		HAL_GPIO_WritePin(YELLOW_LIGHT_1_GPIO_Port, YELLOW_LIGHT_1_Pin, RESET);
 		HAL_GPIO_WritePin(GREEN_LIGHT_1_GPIO_Port, GREEN_LIGHT_1_Pin, RESET);
@@ -66,7 +68,8 @@ void FsmForTrafficLight (void){
 		break;
 	case GREEN1_RED2:
 		value2 = timer_counter[0]* timerInterruptCycle + timeForYellow;
-		value1 = timer_counter[0]* timerInterruptCycle;;
+		value1 = timer_counter[0]* timerInterruptCycle;
+		displayOn7SegLed();
 		HAL_GPIO_WritePin(RED_LIGHT_1_GPIO_Port, RED_LIGHT_1_Pin, RESET);
 		HAL_GPIO_WritePin(YELLOW_LIGHT_1_GPIO_Port, YELLOW_LIGHT_1_Pin, RESET);
 		HAL_GPIO_WritePin(GREEN_LIGHT_1_GPIO_Port, GREEN_LIGHT_1_Pin, SET);
@@ -87,8 +90,10 @@ void FsmForTrafficLight (void){
 		}
 		break;
 	case YELLOW1_RED2:
+
 		value2 = timer_counter[0]* timerInterruptCycle;
 		value1 = timer_counter[0]* timerInterruptCycle;
+		displayOn7SegLed();
 		HAL_GPIO_WritePin(RED_LIGHT_1_GPIO_Port, RED_LIGHT_1_Pin, RESET);
 		HAL_GPIO_WritePin(YELLOW_LIGHT_1_GPIO_Port, YELLOW_LIGHT_1_Pin, SET);
 		HAL_GPIO_WritePin(GREEN_LIGHT_1_GPIO_Port, GREEN_LIGHT_1_Pin, RESET);
@@ -109,6 +114,7 @@ void FsmForTrafficLight (void){
 		}
 		break;
 	case RED_LIGHT_CONFIG:
+		displayOn7SegLed();
 		if(isButtonPressed(1)){
 			if(value1 > 99000){
 				value1 = 0;
@@ -134,6 +140,7 @@ void FsmForTrafficLight (void){
 		}
 		break;
 	case YELLOW_LIGHT_CONFIG:
+		displayOn7SegLed();
 		if(isButtonPressed(1)){
 			if(value1 > 99000){
 				value1 = 0;
@@ -158,7 +165,7 @@ void FsmForTrafficLight (void){
 		}
 		break;
 	case GREEN_LIGHT_CONFIG:
-
+		displayOn7SegLed();
 		if(isButtonPressed(1)){
 			if(value1 > 99000){
 				value1 = 0;
@@ -189,6 +196,9 @@ void FsmForTrafficLight (void){
 		}
 		break;
 	case ERROR_STATE:
+		value1 = 0;
+		value2 = 0;
+		displayOn7SegLed();
 		turnOnAllLight();
 		if(timer_flag[0]){
 			status = RED1_GREEN2;

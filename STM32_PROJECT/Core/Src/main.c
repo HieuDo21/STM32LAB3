@@ -105,7 +105,6 @@ int main(void)
   while (1)
   {
 	  FsmForTrafficLight();
-	  displayOn7SegLed();
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
