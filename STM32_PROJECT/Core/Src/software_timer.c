@@ -6,11 +6,11 @@
  */
 #include "software_timer.h"
 #include "global.h"
-int TIMER_CYCLE = 10;
+
 int timer_flag[No_timers] = {};
 int timer_counter[No_timers] ={};
-void setTimer (int duration, int index){
-	timer_counter[index] = duration / TIMER_CYCLE;
+void setTimer (int duration, int index){			/// duration is time value want to set in millisecond
+	timer_counter[index] = duration / timerInterruptCycle;
 	timer_flag[index] = 0;
 }
 void timer_run (){

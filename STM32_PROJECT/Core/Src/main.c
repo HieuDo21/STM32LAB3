@@ -93,24 +93,19 @@ int main(void)
   /* USER CODE BEGIN 2 */
   HAL_TIM_Base_Start_IT(&htim2);
 
-  setTimer (50, 1);
-  value1 = 200;
-  value2 = 200;
+
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  timerInterruptCycle = (int)((((float)(prescaler+1)*(float)(counter+1))/8000000)*1000);
+  setTimer (50, 1);
   status = INIT;
   while (1)
   {
-	  update7SegBuffer();
 	  FsmForTrafficLight();
-	  if(timer_flag[1] == 1){
-		  if (index_led > 3){
-			index_led = 0;
-		  }update7SEG(index_led++);
-		  setTimer(50, 1);
-	  }
+	  displayOn7SegLed();
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -172,9 +167,9 @@ static void MX_TIM2_Init(void)
 
   /* USER CODE END TIM2_Init 1 */
   htim2.Instance = TIM2;
-  htim2.Init.Prescaler = 7999;
+  htim2.Init.Prescaler = prescaler;
   htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim2.Init.Period = 9;
+  htim2.Init.Period = counter;
   htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
   if (HAL_TIM_Base_Init(&htim2) != HAL_OK)
@@ -252,7 +247,6 @@ static void MX_GPIO_Init(void)
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
 	if(htim->Instance == TIM2){
-		button_reading();
 		timer_run();
 		getKeyInput();
 	}

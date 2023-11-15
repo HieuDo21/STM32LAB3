@@ -8,7 +8,7 @@
 #include "FsmTrafficLight.h"
 
 int status = 0;
-int timeForGreen = 5000;
+int timeForGreen = 5000; 	////	all times in millisecond
 int timeForYellow = 3000;
 int timeForRed = 8000;
 int timeForGreen_tmp;

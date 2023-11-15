@@ -15,6 +15,7 @@ extern int value2;
 void display7SEG (int number);
 void update7SEG (int index);
 void update7SegBuffer();
+void displayOn7SegLed();
 void clearAllLight();
 void turnOnAllLight();
 #endif /* INC_DISPLAY_H_ */

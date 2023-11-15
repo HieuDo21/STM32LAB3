@@ -6,3 +6,5 @@
  */
 
 //int status = 0;
+#include "global.h"
+int timerInterruptCycle = 0;

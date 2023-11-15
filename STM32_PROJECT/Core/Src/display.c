@@ -65,6 +65,15 @@ void update7SegBuffer(){
 	led_buffer[2] = value2/1000;
 	led_buffer[3] = (value2%1000)/100;
 }
+void displayOn7SegLed(){
+	update7SegBuffer();
+	if(timer_flag[1] == 1){
+		  if (index_led > 3){
+			index_led = 0;
+		  }update7SEG(index_led++);
+		  setTimer(50, 1);
+	  }
+}
 void clearAllLight(){
 	HAL_GPIO_WritePin(RED_LIGHT_1_GPIO_Port, RED_LIGHT_1_Pin, RESET);
 	HAL_GPIO_WritePin(YELLOW_LIGHT_1_GPIO_Port, YELLOW_LIGHT_1_Pin, RESET);
