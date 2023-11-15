@@ -60,10 +60,10 @@ int led_buffer [4] = {5,6,7,8};
 }
 void update7SegBuffer(){
 //	value1 = timer_counter[0];
-	led_buffer[0] = value1/1000;
-	led_buffer[1] = (value1%1000)/100;
-	led_buffer[2] = value2/1000;
-	led_buffer[3] = (value2%1000)/100;
+	led_buffer[0] = value1/10000;
+	led_buffer[1] = (value1%10000)/1000;
+	led_buffer[2] = value2/10000;
+	led_buffer[3] = (value2%10000)/1000;
 }
 void displayOn7SegLed(){
 	update7SegBuffer();

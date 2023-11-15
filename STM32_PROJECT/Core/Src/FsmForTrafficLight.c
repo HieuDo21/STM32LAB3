@@ -21,8 +21,8 @@ void FsmForTrafficLight (void){
 		setTimer(timeForGreen, 0);
 		break;
 	case RED1_GREEN2:
-		value2 = timer_counter[0];
-		value1 = timer_counter[0] + timeForYellow/10;
+		value2 = timer_counter[0] * timerInterruptCycle;
+		value1 = timer_counter[0] * timerInterruptCycle + timeForYellow;
 		HAL_GPIO_WritePin(RED_LIGHT_1_GPIO_Port, RED_LIGHT_1_Pin, SET);
 		HAL_GPIO_WritePin(YELLOW_LIGHT_1_GPIO_Port, YELLOW_LIGHT_1_Pin, RESET);
 		HAL_GPIO_WritePin(GREEN_LIGHT_1_GPIO_Port, GREEN_LIGHT_1_Pin, RESET);
@@ -43,8 +43,8 @@ void FsmForTrafficLight (void){
 		}
 		break;
 	case RED1_YELLOW2:
-		value2 = timer_counter[0];
-		value1 = timer_counter[0];
+		value2 = timer_counter[0] * timerInterruptCycle;
+		value1 = timer_counter[0] * timerInterruptCycle;
 		HAL_GPIO_WritePin(RED_LIGHT_1_GPIO_Port, RED_LIGHT_1_Pin, SET);
 		HAL_GPIO_WritePin(YELLOW_LIGHT_1_GPIO_Port, YELLOW_LIGHT_1_Pin, RESET);
 		HAL_GPIO_WritePin(GREEN_LIGHT_1_GPIO_Port, GREEN_LIGHT_1_Pin, RESET);
@@ -65,8 +65,8 @@ void FsmForTrafficLight (void){
 		}
 		break;
 	case GREEN1_RED2:
-		value2 = timer_counter[0] + timeForYellow/10;
-		value1 = timer_counter[0];
+		value2 = timer_counter[0]* timerInterruptCycle + timeForYellow;
+		value1 = timer_counter[0]* timerInterruptCycle;;
 		HAL_GPIO_WritePin(RED_LIGHT_1_GPIO_Port, RED_LIGHT_1_Pin, RESET);
 		HAL_GPIO_WritePin(YELLOW_LIGHT_1_GPIO_Port, YELLOW_LIGHT_1_Pin, RESET);
 		HAL_GPIO_WritePin(GREEN_LIGHT_1_GPIO_Port, GREEN_LIGHT_1_Pin, SET);
@@ -87,8 +87,8 @@ void FsmForTrafficLight (void){
 		}
 		break;
 	case YELLOW1_RED2:
-		value2 = timer_counter[0];
-		value1 = timer_counter[0];
+		value2 = timer_counter[0]* timerInterruptCycle;
+		value1 = timer_counter[0]* timerInterruptCycle;
 		HAL_GPIO_WritePin(RED_LIGHT_1_GPIO_Port, RED_LIGHT_1_Pin, RESET);
 		HAL_GPIO_WritePin(YELLOW_LIGHT_1_GPIO_Port, YELLOW_LIGHT_1_Pin, SET);
 		HAL_GPIO_WritePin(GREEN_LIGHT_1_GPIO_Port, GREEN_LIGHT_1_Pin, RESET);
@@ -110,14 +110,14 @@ void FsmForTrafficLight (void){
 		break;
 	case RED_LIGHT_CONFIG:
 		if(isButtonPressed(1)){
-			if(value1 > 9900){
+			if(value1 > 99000){
 				value1 = 0;
 			}else{
-				value1 += 100;
+				value1 += 1000;
 			}
 		}
 		if(isButtonPressed(2)){
-			timeForRed_tmp = value1*10;
+			timeForRed_tmp = value1;
 		}
 
 		if(timer_flag[0] == 1){
@@ -135,14 +135,14 @@ void FsmForTrafficLight (void){
 		break;
 	case YELLOW_LIGHT_CONFIG:
 		if(isButtonPressed(1)){
-			if(value1 > 9900){
+			if(value1 > 99000){
 				value1 = 0;
 			}else{
-				value1 += 100;
+				value1 += 1000;
 			}
 		}
 		if(isButtonPressed(2)){
-			timeForYellow_tmp = value1*10;
+			timeForYellow_tmp = value1;
 		}
 		if(timer_flag[0] == 1){
 			HAL_GPIO_TogglePin(YELLOW_LIGHT_1_GPIO_Port, YELLOW_LIGHT_1_Pin);
@@ -160,14 +160,14 @@ void FsmForTrafficLight (void){
 	case GREEN_LIGHT_CONFIG:
 
 		if(isButtonPressed(1)){
-			if(value1 > 9900){
+			if(value1 > 99000){
 				value1 = 0;
 			}else{
-				value1 += 100;
+				value1 += 1000;
 			}
 		}
 		if(isButtonPressed(2)){
-			timeForGreen_tmp = value1*10;
+			timeForGreen_tmp = value1;
 			if (timeForGreen_tmp + timeForYellow_tmp != timeForRed_tmp){
 				status = ERROR_STATE;
 				setTimer(2000, 0);
